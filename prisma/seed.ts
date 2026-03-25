@@ -5,15 +5,15 @@ const prisma = new PrismaClient();
 const PAISES_MUNDIAL: { nombre: string; codigoFifa: string; grupo: string }[] = [
   // Grupo A
   { nombre: "México", codigoFifa: "MEX", grupo: "A" },
-  { nombre: "Corea del Sur", codigoFifa: "KOR", grupo: "A" },
+  { nombre: "República de Corea", codigoFifa: "KOR", grupo: "A" },
   { nombre: "Sudáfrica", codigoFifa: "RSA", grupo: "A" },
-  { nombre: "Ganador playoff UEFA 1", codigoFifa: "UEFA1", grupo: "A" },
+  { nombre: "Playoff A (DEN/MKD/CZE/IRL)", codigoFifa: "P_A", grupo: "A" },
 
   // Grupo B
   { nombre: "Canadá", codigoFifa: "CAN", grupo: "B" },
   { nombre: "Suiza", codigoFifa: "SUI", grupo: "B" },
-  { nombre: "Qatar", codigoFifa: "QAT", grupo: "B" },
-  { nombre: "Ganador playoff UEFA 2", codigoFifa: "UEFA2", grupo: "B" },
+  { nombre: "Catar", codigoFifa: "QAT", grupo: "B" },
+  { nombre: "Playoff B (ITA/NIR/WAL/BIH)", codigoFifa: "P_B", grupo: "B" },
 
   // Grupo C
   { nombre: "Brasil", codigoFifa: "BRA", grupo: "C" },
@@ -25,7 +25,7 @@ const PAISES_MUNDIAL: { nombre: string; codigoFifa: string; grupo: string }[] = 
   { nombre: "Estados Unidos", codigoFifa: "USA", grupo: "D" },
   { nombre: "Australia", codigoFifa: "AUS", grupo: "D" },
   { nombre: "Paraguay", codigoFifa: "PAR", grupo: "D" },
-  { nombre: "Ganador playoff UEFA 3", codigoFifa: "UEFA3", grupo: "D" },
+  { nombre: "Playoff C (TUR/ROU/SVK/XKX)", codigoFifa: "P_C", grupo: "D" },
 
   // Grupo E
   { nombre: "Alemania", codigoFifa: "GER", grupo: "E" },
@@ -37,7 +37,7 @@ const PAISES_MUNDIAL: { nombre: string; codigoFifa: string; grupo: string }[] = 
   { nombre: "Países Bajos", codigoFifa: "NED", grupo: "F" },
   { nombre: "Japón", codigoFifa: "JPN", grupo: "F" },
   { nombre: "Túnez", codigoFifa: "TUN", grupo: "F" },
-  { nombre: "Ganador playoff UEFA 4", codigoFifa: "UEFA4", grupo: "F" },
+  { nombre: "Playoff D (UKR/SWE/POL/ALB)", codigoFifa: "P_D", grupo: "F" },
 
   // Grupo G
   { nombre: "Bélgica", codigoFifa: "BEL", grupo: "G" },
@@ -46,45 +46,34 @@ const PAISES_MUNDIAL: { nombre: string; codigoFifa: string; grupo: string }[] = 
   { nombre: "Irán", codigoFifa: "IRN", grupo: "G" },
 
   // Grupo H
-  { nombre: "Argentina", codigoFifa: "ARG", grupo: "H" },
-  { nombre: "Canadá / otro clasificado", codigoFifa: "TBD1", grupo: "H" },
-  { nombre: "Uzbekistán", codigoFifa: "UZB", grupo: "H" },
-  { nombre: "Jordania", codigoFifa: "JOR", grupo: "H" },
+  { nombre: "España", codigoFifa: "ESP", grupo: "H" },
+  { nombre: "Arabia Saudí", codigoFifa: "KSA", grupo: "H" },
+  { nombre: "Uruguay", codigoFifa: "URU", grupo: "H" },
+  { nombre: "Cabo Verde", codigoFifa: "CPV", grupo: "H" },
 
   // Grupo I
   { nombre: "Francia", codigoFifa: "FRA", grupo: "I" },
-  { nombre: "Colombia", codigoFifa: "COL", grupo: "I" },
-  { nombre: "Argelia", codigoFifa: "ALG", grupo: "I" },
-  { nombre: "Corea del Norte", codigoFifa: "PRK", grupo: "I" },
+  { nombre: "Senegal", codigoFifa: "SEN", grupo: "I" },
+  { nombre: "Noruega", codigoFifa: "NOR", grupo: "I" },
+  { nombre: "Playoff E (IRQ/BOL/SUR)", codigoFifa: "P_E", grupo: "I" },
 
   // Grupo J
-  { nombre: "Inglaterra", codigoFifa: "ENG", grupo: "J" },
-  { nombre: "Uruguay", codigoFifa: "URU", grupo: "J" },
-  { nombre: "Panamá", codigoFifa: "PAN", grupo: "J" },
-  { nombre: "Arabia Saudita", codigoFifa: "KSA", grupo: "J" },
+  { nombre: "Argentina", codigoFifa: "ARG", grupo: "J" },
+  { nombre: "Argelia", codigoFifa: "ALG", grupo: "J" },
+  { nombre: "Austria", codigoFifa: "AUT", grupo: "J" },
+  { nombre: "Jordania", codigoFifa: "JOR", grupo: "J" },
 
   // Grupo K
   { nombre: "Portugal", codigoFifa: "POR", grupo: "K" },
   { nombre: "Uzbekistán", codigoFifa: "UZB", grupo: "K" },
   { nombre: "Colombia", codigoFifa: "COL", grupo: "K" },
-  { nombre: "Playoff intercontinental K (JAM/RDC/NCL)", codigoFifa: "P_K", grupo: "K" },
+  { nombre: "Playoff K (JAM/RDC/NCL)", codigoFifa: "P_K", grupo: "K" },
 
   // Grupo L
   { nombre: "Inglaterra", codigoFifa: "ENG", grupo: "L" },
   { nombre: "Croacia", codigoFifa: "CRO", grupo: "L" },
   { nombre: "Ghana", codigoFifa: "GHA", grupo: "L" },
   { nombre: "Panamá", codigoFifa: "PAN", grupo: "L" },
-
-  // Extras para grupos con repechaje
-  { nombre: "Cabo Verde", codigoFifa: "CPV", grupo: "H" },
-  { nombre: "Senegal", codigoFifa: "SEN", grupo: "I" },
-  { nombre: "Noruega", codigoFifa: "NOR", grupo: "I" },
-  { nombre: "Austria", codigoFifa: "AUT", grupo: "J" },
-  { nombre: "Playoff A (DEN/MKD/CZE/IRL)", codigoFifa: "P_A", grupo: "A" },
-  { nombre: "Playoff B (ITA/NIR/WAL/BIH)", codigoFifa: "P_B", grupo: "B" },
-  { nombre: "Playoff C (TUR/ROU/SVK/XKX)", codigoFifa: "P_C", grupo: "D" },
-  { nombre: "Playoff D (UKR/SWE/POL/ALB)", codigoFifa: "P_D", grupo: "F" },
-  { nombre: "Playoff E (IRQ/BOL/SUR)", codigoFifa: "P_E", grupo: "I" },
 ];
 
 async function main() {
