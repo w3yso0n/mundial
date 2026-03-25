@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🐷 Cucerdos Mundial
 
-## Getting Started
+Plataforma fullstack en Next.js para la quiniela/fantasy del mundial entre amigos: países asignados, duelos, tabla de posiciones y vista tipo dashboard + fantasy.
 
-First, run the development server:
+## Stack
+
+- **Frontend/Backend:** Next.js 16 (App Router, Server Components, Server Actions)
+- **DB:** PostgreSQL
+- **ORM:** Prisma 6
+- **UI:** Tailwind CSS 4 + componentes custom
+- **Gráficos:** Recharts (listo para usar)
+- **Auth:** Por definir (NextAuth o invitación simple)
+
+## Cómo levantar el proyecto
+
+### 1. Dependencias
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Base de datos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crea una base PostgreSQL y define la URL en `.env`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+cp .env.example .env
+# Edita .env y pon tu DATABASE_URL, por ejemplo:
+# DATABASE_URL="postgresql://user:password@localhost:5432/cucerdos_mundial?schema=public"
+```
 
-## Learn More
+### 3. Prisma
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm db:generate   # Genera el cliente Prisma
+pnpm db:push       # Crea/actualiza tablas en la DB (sin migraciones)
+pnpm db:seed       # Datos de ejemplo (torneo, participantes, países, una deuda)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Desarrollo
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+Abre [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Módulos de la plataforma
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Ruta | Descripción |
+|------|-------------|
+| `/` | Dashboard: pozo, partidos, deudas, top 3, próximo partido, cards de participantes |
+| `/participantes` | Lista de amigos con países, saldo y badges |
+| `/participantes/[id]` | Detalle de un participante |
+| `/paises` | Selecciones por grupo, puntos, estado (vivo/eliminado/campeón) |
+| `/duelos` | Cruces entre amigos cuando se enfrentan sus países |
+| `/deudas` | Quién debe a quién, historial de pagos |
+| `/tabla` | Ranking por saldo |
+| `/calendario` | Partidos con fecha, equipos, resultado y duelos vinculados |
+| `/admin` | Torneo actual, listado de participantes/países, **marcar deuda como pagada** |
+
+## Próximos pasos (post-MVP)
+
+- Auth (NextAuth o invitación por link)
+- Sorteo de países desde la UI
+- Carga de resultados de partidos (o integración API)
+- Generación automática de duelos cuando hay partido entre dos países con dueños
+- Gráficos con Recharts (evolución del pozo, aciertos por participante)
+- Vista tipo bracket/torneo
+- Subida de avatar/foto por participante
+
+## Scripts
+
+- `pnpm dev` — Servidor de desarrollo
+- `pnpm build` — Build de producción (incluye `prisma generate`)
+- `pnpm db:studio` — Abre Prisma Studio para ver/editar la DB
