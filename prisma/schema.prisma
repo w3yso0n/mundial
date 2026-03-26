@@ -82,6 +82,7 @@ model Pais {
   asignaciones PaisAsignacion[]
   partidosLocal   Partido[] @relation("Local")
   partidosVisitante Partido[] @relation("Visitante")
+  partidosGanados  Partido[] @relation("GanadorPartido")
 }
 
 // Relación N:N Participante - País (cada amigo tiene N países)
@@ -109,6 +110,12 @@ model Partido {
   visitanteId   String
   local         Pais     @relation("Local", fields: [localId], references: [id], onDelete: Cascade)
   visitante     Pais     @relation("Visitante", fields: [visitanteId], references: [id], onDelete: Cascade)
+  // Para armar UI (tabs + llave) sin depender de nombres libres en Jornada
+  fase          String   @default("grupos") // grupos | octavos | cuartos | semis | final | tercero | etc.
+  grupo         String?  // opcional: A, B, C... (solo fase de grupos)
+  orden         Int?     // slot/orden dentro de la fase (útil para dibujar la llave)
+  ganadorId     String?
+  ganador       Pais?    @relation("GanadorPartido", fields: [ganadorId], references: [id], onDelete: SetNull)
   fecha         DateTime
   estadio       String?
   golesLocal    Int?
@@ -117,6 +124,9 @@ model Partido {
 
   duelos  Duelo[]
   picks   Pick[]
+
+  @@index([torneoId, fase])
+  @@index([torneoId, fase, orden])
 }
 
 // ============ DUELO (cruce entre amigos cuando juegan sus países) ============
