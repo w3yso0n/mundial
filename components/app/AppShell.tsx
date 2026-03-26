@@ -154,7 +154,7 @@ function PlayersSheet({
         onClick={onClose}
         aria-label="Cerrar"
       />
-      <div className="absolute bottom-0 left-0 right-0 glass max-h-[80vh] rounded-t-2xl p-4">
+      <div className="absolute bottom-0 left-0 right-0 glass flex max-h-[80vh] flex-col overflow-hidden rounded-t-2xl p-4">
         <div className="mb-3 flex items-center justify-between">
           <div className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-400">
             Jugadores
@@ -167,7 +167,7 @@ function PlayersSheet({
             Cerrar
           </button>
         </div>
-        <div className="space-y-3 overflow-auto pr-1">
+        <div className="min-h-0 flex-1 space-y-3 overflow-auto pr-1 overscroll-contain touch-pan-y">
           {players.map((p, idx) => (
             <div
               key={p.id}
