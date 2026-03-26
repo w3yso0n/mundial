@@ -272,15 +272,6 @@ export function AppShell({
         <main className="glass min-h-[720px] flex-1 rounded-2xl p-4 sm:p-5">
           {children}
         </main>
-
-        <div className="fixed bottom-6 right-6">
-          <Link
-            href="/admin"
-            className="glass inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold text-slate-100 hover:bg-white/10"
-          >
-            Administrar
-          </Link>
-        </div>
       </div>
 
       <PlayersSheet open={playersOpen} onClose={() => setPlayersOpen(false)} players={players} />

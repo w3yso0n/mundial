@@ -1,9 +1,10 @@
-const ROWS = [
-  { pos: 1, jugador: "Carlos", vivos: "2/2", equipos: ["MEX", "ARG"], premio: 800 },
-  { pos: 2, jugador: "Sofía", vivos: "2/2", equipos: ["BRA", "ESP"], premio: 0 },
-  { pos: 3, jugador: "Miguel", vivos: "2/2", equipos: ["FRA", "ALG"], premio: 0 },
-  { pos: 4, jugador: "Ana", vivos: "2/2", equipos: ["NED", "POR"], premio: 0 },
-] as const;
+export type RankingRow = {
+  pos: number;
+  jugador: string;
+  vivos: string; // "x/y"
+  equipos: string[]; // códigos FIFA
+  premio: number; // por ahora puede ser 0
+};
 
 function TeamChip({ code }: { code: string }) {
   return (
@@ -13,7 +14,7 @@ function TeamChip({ code }: { code: string }) {
   );
 }
 
-export function RankingTable() {
+export function RankingTable({ rows }: { rows: RankingRow[] }) {
   return (
     <div className="overflow-hidden rounded-2xl bg-white/3 ring-1 ring-white/10">
       <div className="grid grid-cols-[80px_1fr_160px_240px_140px] gap-2 border-b border-white/10 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-400">
@@ -25,7 +26,7 @@ export function RankingTable() {
       </div>
 
       <div className="divide-y divide-white/8">
-        {ROWS.map((r) => (
+        {rows.map((r) => (
           <div
             key={r.pos}
             className="grid grid-cols-[80px_1fr_160px_240px_140px] items-center gap-2 px-5 py-4 text-sm text-slate-200"

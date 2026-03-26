@@ -17,6 +17,14 @@ export async function GroupsGridDb() {
         select: { id: true, nombre: true, codigoFifa: true, grupo: true },
         orderBy: [{ grupo: "asc" }, { nombre: "asc" }],
       },
+      participantes: {
+        select: {
+          id: true,
+          nombre: true,
+          apodo: true,
+          paisesAsignados: { select: { paisId: true } },
+        },
+      },
     },
   });
 
@@ -28,11 +36,17 @@ export async function GroupsGridDb() {
     );
   }
 
+  const ownerByPaisId = new Map<string, string>();
+  for (const part of torneo.participantes ?? []) {
+    const display = part.apodo?.trim() ? part.apodo : part.nombre;
+    for (const a of part.paisesAsignados ?? []) ownerByPaisId.set(a.paisId, display);
+  }
+
   const groups = new Map<string, { id: string; items: { code: string; name: string }[] }>();
   for (const p of torneo.paises) {
     const g = p.grupo ?? "—";
     const arr = groups.get(g) ?? { id: g, items: [] };
-    arr.items.push({ code: p.codigoFifa, name: p.nombre });
+    arr.items.push({ code: p.codigoFifa, name: p.nombre, owner: ownerByPaisId.get(p.id) ?? null });
     groups.set(g, arr);
   }
 
@@ -60,7 +74,16 @@ export async function GroupsGridDb() {
                   <div className="grid h-7 w-14 place-items-center rounded-lg bg-emerald-500/10 text-xs font-semibold text-emerald-200 ring-1 ring-emerald-500/20">
                     {t.code}
                   </div>
-                  <div className="min-w-0 truncate text-sm font-medium text-slate-100">{t.name}</div>
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium text-slate-100">{t.name}</div>
+                    {t.owner ? (
+                      <div className="mt-0.5 truncate text-xs font-semibold text-rose-300">
+                        {t.owner}
+                      </div>
+                    ) : (
+                      <div className="mt-0.5 truncate text-xs text-slate-500">Sin asignar</div>
+                    )}
+                  </div>
                 </div>
                 <div className="hidden sm:block">
                   <Chip text="vivo" />

@@ -21,7 +21,6 @@ export default function AdminLoginPage() {
                 name="email"
                 type="email"
                 required
-                defaultValue="admin@demo.com"
                 className="w-full bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-600"
               />
             </div>
@@ -35,7 +34,6 @@ export default function AdminLoginPage() {
                 name="password"
                 type="password"
                 required
-                defaultValue="12345678"
                 className="w-full bg-transparent text-sm text-slate-100 outline-none placeholder:text-slate-600"
               />
             </div>
