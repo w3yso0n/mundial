@@ -42,7 +42,10 @@ export async function GroupsGridDb() {
     for (const a of part.paisesAsignados ?? []) ownerByPaisId.set(a.paisId, display);
   }
 
-  const groups = new Map<string, { id: string; items: { code: string; name: string }[] }>();
+  const groups = new Map<
+    string,
+    { id: string; items: { code: string; name: string; owner: string | null }[] }
+  >();
   for (const p of torneo.paises) {
     const g = p.grupo ?? "—";
     const arr = groups.get(g) ?? { id: g, items: [] };
