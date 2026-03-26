@@ -339,16 +339,18 @@ export function AdminUi({
                         <option value="" disabled>
                           Asignar equipo…
                         </option>
-                        {paises.map((pais) => {
-                          const owner = assignedPaisToParticipante.get(pais.id);
-                          const disabled = owner != null && owner !== p.id;
-                          return (
-                            <option key={pais.id} value={pais.id} disabled={disabled}>
+                        {paises
+                          .filter((pais) => {
+                            const owner = assignedPaisToParticipante.get(pais.id);
+                            if (owner && owner !== p.id) return false; // ya está asignado a otra persona
+                            // Evitar mostrar repetidos si ya lo tiene este participante
+                            return !(p.paisesAsignados ?? []).some((a) => a.paisId === pais.id);
+                          })
+                          .map((pais) => (
+                            <option key={pais.id} value={pais.id}>
                               {pais.codigoFifa} — {pais.nombre}
-                              {disabled ? " (asignado)" : ""}
                             </option>
-                          );
-                        })}
+                          ))}
                       </Select>
                       <Button type="submit" variant="ghost" className="px-3 py-2">
                         <CirclePlus className="h-4 w-4" />
